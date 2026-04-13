@@ -1,0 +1,127 @@
+/* ── Reset & Tokens ────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#242836;--border:#2e3348;
+  --accent:#7c6aef;--accent-light:#9b8cf7;--accent-glow:rgba(124,106,239,.25);
+  --text:#e8e6f0;--text-muted:#9593a8;--danger:#ef4444;--success:#22c55e;
+  --radius:12px;--radius-lg:20px;
+  --font:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',sans-serif;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+a{color:var(--accent-light);text-decoration:none}
+a:hover{text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* ── Nav ───────────────────────────────────────────── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;backdrop-filter:blur(16px);
+  background:rgba(15,17,23,.8);border-bottom:1px solid var(--border);padding:0 2rem}
+.nav-inner{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:1.15rem;color:var(--text)}
+.nav-logo img{height:36px;border-radius:8px}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:var(--text-muted);font-size:.9rem;font-weight:500;transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:var(--accent-light);text-decoration:none}
+
+/* ── Hero ──────────────────────────────────────────── */
+.hero{min-height:85vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:8rem 2rem 4rem;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-20%;left:50%;transform:translateX(-50%);
+  width:800px;height:800px;background:radial-gradient(circle,var(--accent-glow) 0%,transparent 70%);
+  pointer-events:none;opacity:.6}
+.hero h1{font-size:clamp(2.4rem,5vw,4rem);font-weight:800;letter-spacing:-.02em;
+  background:linear-gradient(135deg,var(--text),var(--accent-light));-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;position:relative}
+.hero p{max-width:640px;color:var(--text-muted);font-size:1.15rem;margin:1.5rem 0 2.5rem}
+.hero-badges{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center}
+.badge{display:inline-flex;align-items:center;gap:.4rem;padding:.45rem 1rem;border-radius:99px;
+  font-size:.82rem;font-weight:600;background:var(--surface);border:1px solid var(--border);
+  color:var(--text-muted);transition:border-color .2s,color .2s}
+.badge:hover{border-color:var(--accent);color:var(--accent-light);text-decoration:none}
+.cta-group{display:flex;gap:1rem;margin-top:2rem;flex-wrap:wrap;justify-content:center}
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.75rem 1.8rem;border-radius:99px;
+  font-size:.95rem;font-weight:600;cursor:pointer;border:none;transition:all .25s}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-light);text-decoration:none}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent-light);text-decoration:none}
+
+/* ── Section ───────────────────────────────────────── */
+.section{padding:5rem 2rem}
+.section-inner{max-width:1100px;margin:auto}
+.section-title{font-size:2rem;font-weight:700;margin-bottom:.5rem}
+.section-sub{color:var(--text-muted);margin-bottom:3rem;max-width:600px}
+
+/* ── Feature cards ─────────────────────────────────── */
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);
+  padding:2rem;transition:border-color .3s,transform .3s}
+.card:hover{border-color:var(--accent);transform:translateY(-4px)}
+.card-icon{font-size:2rem;margin-bottom:1rem}
+.card h3{font-size:1.1rem;font-weight:600;margin-bottom:.5rem}
+.card p{color:var(--text-muted);font-size:.92rem}
+
+/* ── Chat widget ───────────────────────────────────── */
+.chat-section{background:var(--surface)}
+.chat-container{max-width:800px;margin:auto;background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--radius-lg);overflow:hidden;display:flex;flex-direction:column;height:520px}
+.chat-header{padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;
+  align-items:center;justify-content:space-between}
+.chat-header h3{font-size:1rem;font-weight:600}
+.chat-status{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--text-muted)}
+.chat-status .dot{width:8px;height:8px;border-radius:50%;background:var(--success)}
+.chat-status .dot.offline{background:var(--danger)}
+.chat-messages{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1rem}
+.msg{max-width:80%;padding:.85rem 1.2rem;border-radius:var(--radius);font-size:.93rem;line-height:1.55;animation:msgIn .3s ease}
+.msg-user{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg-bot{align-self:flex-start;background:var(--surface2);border-bottom-left-radius:4px}
+.msg-system{align-self:center;background:transparent;color:var(--text-muted);font-size:.82rem;text-align:center;padding:.5rem}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.chat-input-area{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:.75rem}
+.chat-input{flex:1;background:var(--surface);border:1px solid var(--border);border-radius:99px;
+  padding:.75rem 1.2rem;color:var(--text);font-size:.93rem;font-family:var(--font);outline:none;transition:border-color .2s}
+.chat-input:focus{border-color:var(--accent)}
+.chat-input::placeholder{color:var(--text-muted)}
+.chat-send{width:42px;height:42px;border-radius:50%;background:var(--accent);border:none;
+  color:#fff;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .2s}
+.chat-send:hover{background:var(--accent-light)}
+.chat-send:disabled{opacity:.4;cursor:not-allowed}
+.typing-indicator{display:flex;gap:4px;padding:0 4px}
+.typing-indicator span{width:6px;height:6px;border-radius:50%;background:var(--text-muted);
+  animation:blink 1.4s infinite both}
+.typing-indicator span:nth-child(2){animation-delay:.2s}
+.typing-indicator span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+
+/* ── Metrics table ─────────────────────────────────── */
+.metrics-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden}
+.metrics-table thead{background:var(--surface2)}
+.metrics-table th,.metrics-table td{padding:.85rem 1.2rem;text-align:left;font-size:.9rem;border-bottom:1px solid var(--border)}
+.metrics-table th{font-weight:600;color:var(--text-muted);font-size:.8rem;text-transform:uppercase;letter-spacing:.04em}
+.metrics-table tbody tr:hover{background:var(--surface)}
+.metrics-table tbody tr:last-child td{border-bottom:none}
+
+/* ── Architecture ──────────────────────────────────── */
+.arch-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+.arch-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.5rem;text-align:center}
+.arch-box .port{font-family:monospace;color:var(--accent-light);font-size:.82rem;margin-top:.3rem}
+.arch-box h4{font-size:.95rem;font-weight:600}
+.arch-arrow{display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:1.5rem}
+
+/* ── Demo images ───────────────────────────────────── */
+.demo-img{border-radius:var(--radius-lg);border:1px solid var(--border);margin:1rem auto;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+
+/* ── Footer ────────────────────────────────────────── */
+.footer{padding:3rem 2rem;border-top:1px solid var(--border);text-align:center;color:var(--text-muted);font-size:.85rem}
+.footer a{color:var(--accent-light)}
+
+/* ── Responsive ────────────────────────────────────── */
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hero h1{font-size:2rem}
+  .chat-container{height:440px}
+  .msg{max-width:90%}
+}
