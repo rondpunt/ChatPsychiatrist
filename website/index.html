@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ChatPsychiatrist — AI Mental Health Support</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- ────────── NAV ────────── -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">
+      <img src="/assets/logo.jpg" alt="Logo" />
+      ChatPsychiatrist
+    </a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#chat">Chat</a></li>
+      <li><a href="#metrics">Evaluation</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="https://arxiv.org/abs/2309.15461" target="_blank">Paper</a></li>
+      <li><a href="https://github.com/EmoCareAI/ChatPsychiatrist" target="_blank">GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ────────── HERO ────────── -->
+<section class="hero" id="home">
+  <h1>AI-Powered Mental Health&nbsp;Support</h1>
+  <p>An instruct-tuned LLaMA-7B model fine-tuned on 8,187 counseling domain instruction pairs — providing empathetic, evidence-based mental health conversations.</p>
+  <div class="hero-badges">
+    <a class="badge" href="https://arxiv.org/abs/2309.15461" target="_blank">📄 PGAI CIKM 2023</a>
+    <a class="badge" href="https://huggingface.co/EmoCareAI/ChatPsychiatrist" target="_blank">🤗 Model on Hugging Face</a>
+    <a class="badge" href="https://huggingface.co/datasets/EmoCareAI/Psych8k" target="_blank">📊 Psych8K Dataset</a>
+  </div>
+  <div class="cta-group">
+    <a href="#chat" class="btn btn-primary">💬 Try the Chat</a>
+    <a href="#about" class="btn btn-outline">Learn More</a>
+  </div>
+</section>
+
+<!-- ────────── ABOUT ────────── -->
+<section class="section" id="about">
+  <div class="section-inner">
+    <h2 class="section-title">Why ChatPsychiatrist?</h2>
+    <p class="section-sub">Addressing delays in traditional psychiatric services through AI-driven early-stage mental health support.</p>
+    <div class="features">
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>Counseling-Tuned LLM</h3>
+        <p>Fine-tuned on real counseling conversations covering topics like anxiety, depression, relationships, academic stress, and more.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">💡</div>
+        <h3>Evidence-Based Responses</h3>
+        <p>Trained with GPT-4 extracted instruction pairs from professional counseling sessions to deliver clinically-informed guidance.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">📏</div>
+        <h3>Domain-Specific Evaluation</h3>
+        <p>Assessed on 7 counseling skill dimensions including active listening, restatement, interpretation, and direct guidance.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔓</div>
+        <h3>Open Source</h3>
+        <p>Fully open — model weights, training data (Psych8K), and evaluation benchmarks (Counselling-Bench 229 questions) are publicly available.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <h3>Multi-Topic Coverage</h3>
+        <p>Covers 5 major categories and many sub-topics: emotion, family, relationship, career development, academic stress, and more.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <h3>FastChat Architecture</h3>
+        <p>Built on the battle-tested FastChat framework with distributed serving, OpenAI-compatible API, and Gradio Web UI.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── TOPIC COVERAGE ────────── -->
+<section class="section" style="background:var(--surface)">
+  <div class="section-inner" style="text-align:center">
+    <h2 class="section-title">Topic Coverage</h2>
+    <p class="section-sub" style="margin-left:auto;margin-right:auto">Distribution of mental health topics in the Psych8K dataset — 5 major categories and dozens of sub-topics.</p>
+    <img src="/assets/Topic_Coverage.png" alt="Topic coverage distribution" class="demo-img" style="max-width:520px;margin:2rem auto" />
+  </div>
+</section>
+
+<!-- ────────── CHAT ────────── -->
+<section class="section chat-section" id="chat">
+  <div class="section-inner">
+    <h2 class="section-title" style="text-align:center">Try ChatPsychiatrist</h2>
+    <p class="section-sub" style="text-align:center;margin-left:auto;margin-right:auto">
+      Have a conversation with our AI counselor. Share what's on your mind in a safe, non-judgmental space.
+    </p>
+    <div class="chat-container">
+      <div class="chat-header">
+        <h3>💬 ChatPsychiatrist</h3>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <span id="model-badge" class="badge" style="display:none;font-size:.75rem;padding:.25rem .7rem"></span>
+          <div class="chat-status">
+            <span class="dot" id="status-dot"></span>
+            <span id="status-text">Checking…</span>
+          </div>
+        </div>
+      </div>
+      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-input-area">
+        <input type="text" class="chat-input" id="chat-input" placeholder="Share what's on your mind…" autocomplete="off" />
+        <button class="chat-send" id="chat-send" title="Send">➤</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── EVALUATION METRICS ────────── -->
+<section class="section" id="metrics">
+  <div class="section-inner">
+    <h2 class="section-title">Evaluation Metrics</h2>
+    <p class="section-sub">Performance is measured across 7 counseling skill dimensions, evaluated by GPT-4 on 229 Counselling-Bench questions.</p>
+    <table class="metrics-table">
+      <thead>
+        <tr>
+          <th>Skill</th>
+          <th>What it measures</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Information</strong></td>
+          <td>Ability to provide accurate psychological data, facts, and resources</td>
+          <td><em>"There is a psychological effect called Zeigarnic effect."</em></td>
+        </tr>
+        <tr>
+          <td><strong>Direct Guidance</strong></td>
+          <td>Clear suggestions, directives, and actionable advice for change</td>
+          <td><em>"To cope with your OCD, plan ahead by discussing concerns with your husband."</em></td>
+        </tr>
+        <tr>
+          <td><strong>Approval &amp; Reassurance</strong></td>
+          <td>Emotional support, encouragement, and reinforcement</td>
+          <td><em>"It's wonderful to hear that you are feeling better!"</em></td>
+        </tr>
+        <tr>
+          <td><strong>Restatement &amp; Reflection</strong></td>
+          <td>Understanding, rephrasing, and reflecting the client's feelings</td>
+          <td><em>"It seems like you are struggling with finding balance in your relationships."</em></td>
+        </tr>
+        <tr>
+          <td><strong>Interpretation</strong></td>
+          <td>Identifying patterns, themes, and deeper meanings beyond stated content</td>
+          <td><em>"I think you love your mom very much."</em></td>
+        </tr>
+        <tr>
+          <td><strong>Self-disclosure</strong></td>
+          <td>Sharing the counselor's own relevant experiences</td>
+          <td><em>"This question brings back some similar memories for me."</em></td>
+        </tr>
+        <tr>
+          <td><strong>Obtain Information</strong></td>
+          <td>Asking appropriate questions to explore the situation</td>
+          <td><em>"Can you provide an example of a change you are considering?"</em></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="text-align:center;margin-top:3rem">
+      <h3 style="margin-bottom:1rem">Single-Turn Evaluation (GPT-4 Scored)</h3>
+      <img src="/assets/single_turn_GPT4_eval.png" alt="Single turn evaluation comparison" class="demo-img" style="max-width:800px" />
+      <p style="color:var(--text-muted);font-size:.88rem;margin-top:1rem">ChatPsychiatrist outperforms other models in most counseling skill categories.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── PIPELINE ────────── -->
+<section class="section" style="background:var(--surface)">
+  <div class="section-inner" style="text-align:center">
+    <h2 class="section-title">Training Pipeline</h2>
+    <p class="section-sub" style="margin-left:auto;margin-right:auto">From counseling recordings to instruction-tuned LLM — the data processing and training pipeline.</p>
+    <img src="/assets/pipeline.png" alt="Training pipeline" class="demo-img" style="max-width:800px;margin:2rem auto" />
+  </div>
+</section>
+
+<!-- ────────── ARCHITECTURE ────────── -->
+<section class="section" id="architecture">
+  <div class="section-inner">
+    <h2 class="section-title">Serving Architecture</h2>
+    <p class="section-sub">Built on FastChat's distributed serving stack for scalable, production-ready deployment.</p>
+    <div class="arch-grid">
+      <div class="arch-box">
+        <h4>🎮 Controller</h4>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:.4rem 0">Manages distributed workers and routes requests</p>
+        <div class="port">:21001</div>
+      </div>
+      <div class="arch-box">
+        <h4>🧠 Model Worker</h4>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:.4rem 0">Loads LLM and serves inference (GPU required)</p>
+        <div class="port">:21002</div>
+      </div>
+      <div class="arch-box">
+        <h4>🔌 OpenAI API</h4>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:.4rem 0">OpenAI-compatible REST API endpoint</p>
+        <div class="port">:8000</div>
+      </div>
+      <div class="arch-box">
+        <h4>🌐 Gradio Web UI</h4>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:.4rem 0">Interactive chat interface in the browser</p>
+        <div class="port">:7860</div>
+      </div>
+      <div class="arch-box">
+        <h4>🏠 This Website</h4>
+        <p style="font-size:.85rem;color:var(--text-muted);margin:.4rem 0">Project showcase + integrated chat client</p>
+        <div class="port">:5000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────── DEMO ────────── -->
+<section class="section" style="background:var(--surface)">
+  <div class="section-inner" style="text-align:center">
+    <h2 class="section-title">Demo Comparison</h2>
+    <p class="section-sub" style="margin-left:auto;margin-right:auto">ChatPsychiatrist (left) vs ChatGPT (right) on a stress topic conversation.</p>
+    <img src="/assets/demo1.png" alt="Demo comparison" class="demo-img" style="max-width:900px;margin:2rem auto" />
+  </div>
+</section>
+
+<!-- ────────── FOOTER ────────── -->
+<footer class="footer">
+  <p style="margin-bottom:.5rem">
+    <strong>ChatPsychiatrist</strong> — by
+    <a href="https://github.com/EmoCareAI" target="_blank">EmoCareAI</a>
+  </p>
+  <p>
+    <a href="https://arxiv.org/abs/2309.15461" target="_blank">Paper (arXiv)</a> ·
+    <a href="https://huggingface.co/EmoCareAI/ChatPsychiatrist" target="_blank">Model</a> ·
+    <a href="https://huggingface.co/datasets/EmoCareAI/Psych8k" target="_blank">Dataset</a> ·
+    <a href="https://github.com/EmoCareAI/ChatPsychiatrist" target="_blank">GitHub</a>
+  </p>
+  <p style="margin-top:1rem;font-size:.78rem;color:var(--text-muted)">
+    ⚠️ This AI is not a replacement for professional mental health care. If you are in crisis, please contact a mental health professional or crisis hotline.
+  </p>
+</footer>
+
+<script src="/static/chat.js"></script>
+</body>
+</html>
