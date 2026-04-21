@@ -6,13 +6,14 @@ Serves the static website and proxies chat requests to the FastChat OpenAI-compa
 import argparse
 import json
 import logging
+import os
 from pathlib import Path
 
 import httpx
 import uvicorn
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, StreamingResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 
 logger = logging.getLogger("website")
@@ -26,7 +27,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-FASTCHAT_API_BASE = "http://localhost:8000"
+FASTCHAT_API_BASE = os.environ.get("FASTCHAT_API_BASE", "http://localhost:8000")
 
 
 @app.post("/api/chat")
@@ -47,7 +48,12 @@ async def chat(request: Request):
             pass
 
     if not model:
-        return {"error": "No model available. A model worker with GPU must be running."}
+        return JSONResponse(
+            status_code=503,
+            content={
+                "error": "No model available. Start a model worker (GPU) or set FASTCHAT_API_BASE."
+            },
+        )
 
     payload = {
         "model": model,
@@ -65,6 +71,15 @@ async def chat(request: Request):
                 json=payload,
                 timeout=120,
             ) as resp:
+                if resp.status_code >= 400:
+                    try:
+                        err_body = await resp.aread()
+                        err_text = err_body.decode("utf-8", errors="replace")[:2000]
+                    except Exception:
+                        err_text = ""
+                    yield f"data: {json.dumps({'error': err_text or resp.reason_phrase, 'status': resp.status_code})}\n\n"
+                    yield "data: [DONE]\n\n"
+                    return
                 async for line in resp.aiter_lines():
                     if line.startswith("data: "):
                         chunk = line[6:]
@@ -73,7 +88,11 @@ async def chat(request: Request):
                             break
                         yield f"data: {chunk}\n\n"
 
-    return StreamingResponse(stream_response(), media_type="text/event-stream")
+    return StreamingResponse(
+        stream_response(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 @app.get("/api/models")
