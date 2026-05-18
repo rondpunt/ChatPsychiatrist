@@ -33,3 +33,4 @@ build
 
 # weights
 weights/
+.env
